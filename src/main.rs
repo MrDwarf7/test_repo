@@ -15,33 +15,59 @@ fn main() -> Result<()> {
         since.as_secs()
     );
 
-    let now = SystemTime::now();
-    now.duration_since(UNIX_EPOCH)?;
     println!("Answering incorrectly results in DEATH!");
     println!("~uWu~");
 
     let question = "What is the answer to life, the universe, and everything in it?".to_string();
-
-    let outcome = match the_answer(question) {
-        42 => "Correct!",
-        69 => "Yes!",
-        9001 => "Such a high power level is obviously correct!",
-        _ => "Incorrect!",
+    if let Some(answer) = the_answer(question) {
+        println!("Outcome: {}", answer);
+        answer
+    } else {
+        println!("You have failed the test. You have been sentenced to death.");
+        0
     };
-    println!("Outcome: {}", outcome);
+
+    fill_and_print();
+
     Ok(())
 }
 
-fn the_answer(question: String) -> i32 {
-    if question == "What is the answer to life, the universe, and everything in it?" {
-        return draw_answer_from_hat();
+fn fill_and_print() {
+    let arr = fill_arr();
+    for i in arr.iter() {
+        println!("{}", i);
     }
-    0
+}
+
+fn fill_arr() -> Vec<i32> {
+    let generator = || -> i32 {
+        let mut rng = rand::thread_rng();
+        rng.gen_range(0..MAX_VALUE as i32)
+    };
+
+    let mut arr = Vec::new();
+    for _ in 0..=HIGHEST_VALUE {
+        arr.push(generator());
+    }
+    arr
+}
+
+fn the_answer(question: String) -> Option<i32> {
+    if question == "What is the answer to life, the universe, and everything in it?" {
+        let n = draw_answer_from_hat();
+        match n {
+            42 => return Some(42),
+            69 => return Some(69),
+            9001 => return Some(9001),
+            _ => return None,
+        }
+    }
+    None
 }
 
 fn draw_answer_from_hat() -> i32 {
-    let numbers = [1, 2, 3, 420, 42, 69, 9001];
-    let mut rng = thread_rng();
+    let numbers = [1, 2, 3, 420, 42, 69, 99];
+    let mut rng = rand::thread_rng();
     if let Some(&random_number) = numbers.choose(&mut rng) {
         random_number
     } else {
