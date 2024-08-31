@@ -3,25 +3,13 @@
 mod error;
 mod prelude;
 
-impl Display for ButterError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "RETARD ALERT!")
-    }
-}
+use rand::{seq::SliceRandom, Rng};
+use std::time::{SystemTime, UNIX_EPOCH};
 
-impl Error for ButterError {
-    fn description(&self) -> &str {
-        "Your diagnosis came back, you're a stage 5 dumbass!"
-    }
-}
+pub use self::prelude::{Result, HIGHEST_VALUE, MAX_VALUE, NOW};
 
-impl From<SystemTimeError> for ButterError {
-    fn from(error: SystemTimeError) -> Self {
-        SillyTimeError(error)
-    }
-}
+fn main() -> Result<()> {
 
-fn main() -> Result<(), ButterError> {
     let now = SystemTime::now();
     now.duration_since(UNIX_EPOCH)?;
     println!("Answering incorrectly results in DEATH!");
