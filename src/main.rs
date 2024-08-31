@@ -1,22 +1,37 @@
+#![allow(dead_code)]
+use crate::ButterError::SillyTimeError;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::error::Error;
+use std::fmt::{Display, Formatter};
+use std::time::{SystemTime, SystemTimeError, UNIX_EPOCH};
 
-fn main() {
-    let now = SystemTime::now();
-    match now.duration_since(UNIX_EPOCH) {
-        Ok(duration) => {
-            let seconds_since = duration.as_secs();
-            if seconds_since % 5 == 0 {
-                println!("UWUUUUUUUUUUUUUUUUUUUUU");
-            } else {
-                println!("YOU HAVE COMMITTED HERESY!");
-            }
-        }
-        Err(_) => {
-            println!("Error occurred while calculating duration.");
-        }
+#[derive(Debug)]
+enum ButterError {
+    SillyTimeError(SystemTimeError),
+}
+
+impl Display for ButterError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "RETARD ALERT!")
     }
+}
+
+impl Error for ButterError {
+    fn description(&self) -> &str {
+        "Your diagnosis came back, you're a stage 5 dumbass!"
+    }
+}
+
+impl From<SystemTimeError> for ButterError {
+    fn from(error: SystemTimeError) -> Self {
+        SillyTimeError(error)
+    }
+}
+
+fn main() -> Result<(), ButterError> {
+    let now = SystemTime::now();
+    now.duration_since(UNIX_EPOCH)?;
     println!("Answering incorrectly results in DEATH!");
     println!("~uWu~");
 
@@ -29,6 +44,7 @@ fn main() {
         _ => "Incorrect!",
     };
     println!("Outcome: {}", outcome);
+    Ok(())
 }
 
 fn the_answer(question: String) -> i32 {
@@ -39,7 +55,7 @@ fn the_answer(question: String) -> i32 {
 }
 
 fn draw_answer_from_hat() -> i32 {
-    let numbers = [1, 2, 3, 42, 69, 9001];
+    let numbers = [1, 2, 3, 420, 42, 69, 9001];
     let mut rng = thread_rng();
     if let Some(&random_number) = numbers.choose(&mut rng) {
         random_number
