@@ -1,20 +1,34 @@
+use rand::seq::SliceRandom;
+use rand::thread_rng;
+
 fn main() {
-    println!("Hello, world!");
-    println!("Hello, world!");
+    println!("Answering incorrectly results in DEATH!");
+    println!("~uWu~");
 
     let question = "What is the answer to life, the universe, and everything?".to_string();
 
-    if the_answer(question) == 42 {
-        println!("Correct!");
-    } else {
-        println!("Incorrect!");
-    }
+    let outcome = match the_answer(question) {
+        42 => "Correct!",
+        69 => "Yes!",
+        9001 => "Such a high power level is obviously correct!",
+        _ => "Incorrect!",
+    };
+    println!("Outcome: {}", outcome);
 }
 
 fn the_answer(question: String) -> i32 {
-    let base = "42".to_string();
     if question == "What is the answer to life, the universe, and everything?" {
-        return base.parse().unwrap();
+        return draw_answer_from_hat();
     }
     0
+}
+
+fn draw_answer_from_hat() -> i32 {
+    let numbers = [1, 2, 3, 42, 69, 9001];
+    let mut rng = thread_rng();
+    if let Some(&random_number) = numbers.choose(&mut rng) {
+        random_number
+    } else {
+        0
+    }
 }
