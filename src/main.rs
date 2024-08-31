@@ -1,15 +1,7 @@
 #![allow(dead_code)]
-use crate::ButterError::SillyTimeError;
-use rand::seq::SliceRandom;
-use rand::thread_rng;
-use std::error::Error;
-use std::fmt::{Display, Formatter};
-use std::time::{SystemTime, SystemTimeError, UNIX_EPOCH};
 
-#[derive(Debug)]
-enum ButterError {
-    SillyTimeError(SystemTimeError),
-}
+mod error;
+mod prelude;
 
 impl Display for ButterError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
