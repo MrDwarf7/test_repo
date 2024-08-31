@@ -20,7 +20,7 @@ fn main() {
     println!("Answering incorrectly results in DEATH!");
     println!("~uWu~");
 
-    let question = "What is the answer to life, the universe, and everything?".to_string();
+    let question = "What is the answer to life, the universe, and everything in it?".to_string();
 
     let outcome = match the_answer(question) {
         42 => "Correct!",
@@ -32,7 +32,7 @@ fn main() {
 }
 
 fn the_answer(question: String) -> i32 {
-    if question == "What is the answer to life, the universe, and everything?" {
+    if question == "What is the answer to life, the universe, and everything in it?" {
         return draw_answer_from_hat();
     }
     0
