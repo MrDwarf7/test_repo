@@ -9,6 +9,11 @@ use std::time::{SystemTime, UNIX_EPOCH};
 pub use self::prelude::{Result, HIGHEST_VALUE, MAX_VALUE, NOW};
 
 fn main() -> Result<()> {
+    let since = NOW.get_or_init(|| SystemTime::now().duration_since(UNIX_EPOCH).unwrap());
+    println!(
+        "It has been {} seconds since the Unix epoch.",
+        since.as_secs()
+    );
 
     let now = SystemTime::now();
     now.duration_since(UNIX_EPOCH)?;
