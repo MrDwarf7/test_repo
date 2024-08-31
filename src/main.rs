@@ -1,7 +1,22 @@
 use rand::seq::SliceRandom;
 use rand::thread_rng;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 fn main() {
+    let now = SystemTime::now();
+    match now.duration_since(UNIX_EPOCH) {
+        Ok(duration) => {
+            let seconds_since = duration.as_secs();
+            if seconds_since % 5 == 0 {
+                println!("UWUUUUUUUUUUUUUUUUUUUUU");
+            } else {
+                println!("YOU HAVE COMMITTED HERESY!");
+            }
+        }
+        Err(_) => {
+            println!("Error occurred while calculating duration.");
+        }
+    }
     println!("Answering incorrectly results in DEATH!");
     println!("~uWu~");
 
